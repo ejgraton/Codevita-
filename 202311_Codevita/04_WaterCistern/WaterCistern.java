@@ -23,7 +23,15 @@ public class WaterCistern {
 
     //Registra o inicio do calculo
     ZonedDateTime t0 = ZonedDateTime.now();
-    
+
+    double menorDistancia = (d < 0)
+      ? caminhoPeloTopo()   //Se o destino estiver na superficie plana do topo, retorna o trajeto mais curto entre ir pela superficie curva ou ir pelo topo
+      : caminhoCurvo(d, g); //Se o destino estiver na superficie curva, o trajeto mais curto será sempre pela superficie curva
+
+    System.out.printf("Saida\n\r%d\n\n\r", Math.round(menorDistancia));
+
+    //Calcula o tempo de processamento entre t0 e agora e apresenta em fracao de segundos
+    System.out.println("Processamento (s): " + Duration.between(t0, ZonedDateTime.now()).toMillis()/1000.0);
   
   }
 
