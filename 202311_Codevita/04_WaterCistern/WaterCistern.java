@@ -80,7 +80,10 @@ public class WaterCistern {
       if(restricoes != "") {
         System.out.println(restricoes);
       }
-    } while(restricoes.length() > 0);        
+    } while(restricoes.length() > 0);    
+    
+    //Reduz angulos maiores que 180 para quadrante 0-180
+    g = g > 180 ? 360-g : g;
   }
 
   private String validarRaioAlturaOrigem() {
@@ -117,12 +120,40 @@ public class WaterCistern {
     return restricoes;
   }
 
-  private double caminhoCurvo(int d2, int g2) {
-    return 1 + caminhoPeloTopo();
+  private double caminhoCurvo(int destino, int angulo) {
+    //Calcula o cateto correspondente ao percurso horizontal na superfice curva
+    double catetoArc = r * Math.PI * (angulo / 180.0);
+
+    //Calcula o cateto projetado verticalmente na superfice curva
+    double catetoH = s - destino;
+
+    return Math.sqrt((catetoArc * catetoArc) + (catetoH * catetoH));
   }
 
   private double caminhoPeloTopo() {
-    return 1;
+    //Avalia grau a grau qual o ponto de menor distancia via superfice curva
+    int g1 = g;
+    double distancia = -1, menorDistancia = -1;
+
+    //Busca a menor distancia percorrendo cada grau entre o grau do destino e o grau 0
+    //Encerra busca se a distancia calculada aumentar em relação a menor distancia localizada
+    do {
+      //Ponto de destino na superficie plana do topo, calcula o cateto pela altura a partir da borda do topo, usando 0 como distancia
+      distancia = caminhoCurvo(0, g1);
+      System.out.printf("Distancia na superficie curva %f - ", distancia);
+
+      //Soma-se a distancia da borda até o ponto de destino
+      distancia += Math.sqrt((r * r) + (d * d) - (2 * r * Math.abs(d) * Math.cos(Math.PI * (g-g1)/180)));
+
+      System.out.printf("Distancia total: %f - Angulo: %d\n\r", distancia, g1);
+
+      //Preserva a menor distancia encontrada
+      if(menorDistancia > distancia) || (menorDistancia == -1)) {
+        menorDistancia = distancia;
+      }
+    } while ((--g1 > -1) && (distancia <= menorDistancia));
+
+    return menorDistancia;
   }
     
 }
