@@ -148,7 +148,7 @@ public class WaterCistern {
       System.out.printf("Distancia total: %f - Angulo: %d\n\r", distancia, g1);
 
       //Preserva a menor distancia encontrada
-      if(menorDistancia > distancia) || (menorDistancia == -1)) {
+      if((menorDistancia > distancia) || (menorDistancia == -1)) {
         menorDistancia = distancia;
       }
     } while ((--g1 > -1) && (distancia <= menorDistancia));
