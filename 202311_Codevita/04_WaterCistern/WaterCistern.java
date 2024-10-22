@@ -35,12 +35,94 @@ public class WaterCistern {
   
   }
 
-  private void entrda_rhs() {
-    
+  private void entrada_rhs() {
+    String[] valores;
+    String restricoes = "";
+
+    do {
+      System.out.println("Entrada");
+      valores = sc.nextLine().split(",");
+      restricoes = "";
+
+      try {
+        r = Integer.parseInt(valores[0]);
+        h = Integer.parseInt(valores[1]);
+        s = Integer.parseInt(valores[2]);
+
+        restricoes = validarRaioAlturaOrigem();
+      } catch(Exception ex) {
+        restricoes = "\n\rTodos os valores informados devem ser inteiros positivos separados por ,\n\r" + ex + "\n\r";
+      }
+
+      if(restricoes != "") {
+        System.out.println(restricoes);
+      }
+    } while(restricoes.length() > 0);    
   }
 
   private void entrada_dg() {
+    String[] valores;
+    String restricoes = "";
+
+    do {
+      valores = sc.nextLine().split(",");
+      restricoes = "";
+
+      try {
+        d = Integer.parseInt(valores[0]);
+        g = Integer.parseInt(valores[1]);
+
+        restricoes = validarDestinoAngulo();
+      } catch(Exception ex) {
+        restricoes = "\n\rTodos os valores informados devem ser inteiros separados por ,\n\r" + ex + "\n\r";
+      }
+
+      if(restricoes != "") {
+        System.out.println(restricoes);
+      }
+    } while(restricoes.length() > 0);        
+  }
+
+  private String validarRaioAlturaOrigem() {
+    String restricoes = s > 40 ? "" : "Origem precisa ser maior que 40\n\r";
+
+    restricoes += h < 40
+      ? "Altura precisa ser maior que 40\n\r"
+      : h < 10000
+          ? ""
+          : "Altura precisa ser menor que 10000\n\r";
     
+    restricoes += s <= h
+      ? ""
+      : "Origem precisa ser menor ou igual a altura\n\r";     
+
+    restricoes += r < 0
+      ? "Raio nao pode ser valor negativo"
+      : r <= 100
+          ? ""
+          : "Raio precisa ser menor que 100\n\r";
+
+    return restricoes;
+  }
+
+  private String validarDestinoAngulo() {
+    String restricoes = (0 <= g) && (g <= 359)
+      ? ""
+      : "Angulo precisa ser entre 0 e 359\n\r";
+
+    restricoes += d < 0
+      ? d > -r ? "" : "Destino esta alem do limite do raio\n\r"
+      : d < h  ? "" : "Destino esta alem do limite de altura\n\r";
+
+    return restricoes;
+  }
+
+  private double caminhoCurvo(int d2, int g2) {
+    return 1 + caminhoPeloTopo();
+  }
+
+  private double caminhoPeloTopo() {
+    return 1;
   }
     
 }
